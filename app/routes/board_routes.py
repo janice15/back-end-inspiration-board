@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, abort, make_response, request
 from app import db
 
-from app.models.board import board
+from app.models.board import Board
 from app.routes.routes_helper import get_valid_item_by_id
 
 boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
@@ -10,9 +10,9 @@ boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
 def handle_boards():
     name_query = request.args.get("name")
     if name_query:
-        boards = board.query.filter_by(name=name_query)
+        boards = Board.query.filter_by(name=name_query)
     else:
-        boards = board.query.all()
+        boards = Board.query.all()
 
     boards_response = []
     for board in boards :
@@ -23,7 +23,7 @@ def handle_boards():
 @boards_bp.route("", methods=['POST'])
 def create_board():
     request_body = request.get_json()
-    new_board = board.from_dict(request_body)
+    new_board = Board.from_dict(request_body)
 
     db.session.add(new_board)
     db.session.commit()
