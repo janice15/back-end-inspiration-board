@@ -9,11 +9,6 @@ db = SQLAlchemy()
 migrate = Migrate()
 load_dotenv()
 
-#import models 
-from app.models.board import Board
-from app.models.card import Card
-
-
 
 def create_app():
     app = Flask(__name__)
@@ -24,6 +19,8 @@ def create_app():
 
     # Import models here for Alembic setup
     # from app.models.ExampleModel import ExampleModel
+    from app.models.board import Board
+    from app.models.card import Card
 
     db.init_app(app)
     migrate.init_app(app, db)
