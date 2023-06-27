@@ -47,13 +47,15 @@ def patch_one_card(card_id):
     return card_to_update.to_dict(), 200
 
 # Post a card to a board
-@cards_bp.route("/board_id/", methods=['POST'])
-def create_card():
+@cards_bp.route("/<board_id>", methods=['POST'])
+def create_card(board_id):
     # Get the data from the request body
     request_body = request.get_json()
+    updated_card_info = request_body
+    updated_card_info["board_id"] = board_id
 
     # Use it to make an Card
-    new_card= Card.from_dict(request_body)
+    new_card= Card.from_dict(updated_card_info)
 
     # Persist (save, commit) it in the database
     db.session.add(new_card)
