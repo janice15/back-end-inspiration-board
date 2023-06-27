@@ -45,3 +45,25 @@ def patch_one_card(card_id):
     card_to_update.likes_count += 1
     db.session.commit()
     return card_to_update.to_dict(), 200
+
+# Post a card to a board
+@cards_bp.route("/board_id/", methods=['POST'])
+def create_card():
+    # Get the data from the request body
+    request_body = request.get_json()
+
+    # Use it to make an Card
+    new_card= Card.from_dict(request_body)
+
+    # Persist (save, commit) it in the database
+    db.session.add(new_card)
+    db.session.commit()
+
+    # Give back our response
+    return {
+        "card_id": new_card.card_id,
+        "message": new_card.message,
+        "likes_count": new_card.likes_count,
+        "board_id": new_card.board_id,
+        "msg": "Successfully created"
+    }, 201

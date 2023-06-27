@@ -9,9 +9,9 @@ boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
 
 @boards_bp.route("", methods=['GET'])
 def handle_boards():
-    name_query = request.args.get("name")
-    if name_query:
-        boards = Board.query.filter_by(name=name_query)
+    owner_query = request.args.get("owner")
+    if owner_query:
+        boards = Board.query.filter_by(owner=owner_query)
     else:
         boards = Board.query.all()
 
@@ -37,26 +37,6 @@ def create_board():
         "msg": "Successfully created"
     }, 201
 
-# Post a card to a board
-@boards_bp.route("/board_id/", methods=['POST'])
-def create_card():
-    # Get the data from the request body
-    request_body = request.get_json()
 
-    # Use it to make an Card
-    new_card= Card.from_dict(request_body)
-
-    # Persist (save, commit) it in the database
-    db.session.add(new_card)
-    db.session.commit()
-
-    # Give back our response
-    return {
-        "card_id": new_card.card_id,
-        "message": new_card.message,
-        "likes_count": new_card.likes_count,
-        "board_id": new_card.board_id,
-        "msg": "Successfully created"
-    }, 201
 
 
