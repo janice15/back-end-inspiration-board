@@ -20,27 +20,6 @@ def handle_cards():
         cards_response.append(card.to_dict())
     return jsonify(cards_response), 200
 
-@cards_bp.route("", methods=['POST'])
-def create_card():
-    # Get the data from the request body
-    request_body = request.get_json()
-
-    # Use it to make an Card
-    new_card= Card.from_dict(request_body)
-
-    # Persist (save, commit) it in the database
-    db.session.add(new_card)
-    db.session.commit()
-
-    # Give back our response
-    return {
-        "card_id": new_card.card_id,
-        "message": new_card.message,
-        "likes_count": new_card.likes_count,
-        "board_id": new_card.board_id,
-        "msg": "Successfully created"
-    }, 201
-
 
 @cards_bp.route("/<card_id>", methods=["GET"])
 def handle_card(card_id):
