@@ -5,7 +5,7 @@ from app.models.card import Card
 from app import db
 from app.routes.routes_helper import get_valid_item_by_id
 
-# All routes defined with animals_bp start with url_prefix (/animals)
+# All routes defined with cards_bp start with url_prefix (/cards)
 cards_bp = Blueprint("cards", __name__, url_prefix="/cards")
 
 @cards_bp.route("", methods=['GET'])
@@ -14,7 +14,7 @@ def handle_cards():
     if name_query:
         cards = Card.query.filter_by(name=name_query)
     else:
-        cards = Card.query.order_by(asc(Card.id)).all()
+        cards = Card.query.order_by(asc(Card.card_id)).all()
     cards_response = []
     for card in cards:
         cards_response.append(card.to_dict())
