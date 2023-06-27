@@ -54,7 +54,7 @@ def delete_one_card(card_id):
     db.session.delete(card_to_delete)
     db.session.commit()
 
-    return f"Card {card_to_delete.name} is deleted!", 200
+    return f"Card {card_to_delete.message} is deleted!", 200
 
 # patch route for likes count. 
 @cards_bp.route("/<card_id>", methods=["PATCH"])
