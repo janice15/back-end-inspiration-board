@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, abort, make_response, request
 from app import db
+from sqlalchemy import inspect, asc
 
 from app.models.card import Card
 from app.models.board import Board
@@ -37,6 +38,44 @@ def create_board():
         "msg": "Successfully created"
     }, 201
 
+#get all cards for one board
+@boards_bp.route("/<board_id>/cards", methods=['GET'])
+def handle_cards(board_id):
+    cards = Card.query.filter_by(board_id=board_id)
+    cards_response = []
+    for card in cards:
+        cards_response.append(card.to_dict())
 
+    return jsonify(cards_response), 200
+
+#get a single card
+@boards_bp.route("<board_id>/cards/<card_id>", methods=["GET"])
+def handle_card(board_id, card_id):
+    card = get_valid_item_by_id(Card, card_id)
+    return card.to_dict(), 200
+
+# Post a card to a board
+@boards_bp.route("/<board_id>/cards", methods=['POST'])
+def create_card(board_id):
+    # Get the data from the request body
+    request_body = request.get_json()
+    updated_card_info = request_body
+    updated_card_info["board_id"] = board_id
+
+    # Use it to make an Card
+    new_card= Card.from_dict(updated_card_info)
+
+    # Persist (save, commit) it in the database
+    db.session.add(new_card)
+    db.session.commit()
+
+    # Give back our response
+    return {
+        "card_id": new_card.card_id,
+        "message": new_card.message,
+        "likes_count": new_card.likes_count,
+        "board_id": new_card.board_id,
+        "msg": "Successfully created"
+    }, 201
 
 
