@@ -7,7 +7,7 @@ from app.models.board import Board
 from app.routes.routes_helper import get_valid_item_by_id
 
 boards_bp = Blueprint("boards", __name__, url_prefix="/boards")
-
+#get  all boards
 @boards_bp.route("", methods=['GET'])
 def handle_boards():
     owner_query = request.args.get("owner")
@@ -20,6 +20,7 @@ def handle_boards():
     for board in boards :
         boards_response.append(board.to_dict())
     return jsonify(boards_response), 200
+
 
 
 @boards_bp.route("", methods=['POST'])
