@@ -23,7 +23,7 @@ def handle_boards():
 
 #get single board
 @boards_bp.route("/<board_id>", methods=['GET'])
-def handle_boards(board_id):
+def get_one_board(board_id):
     owner_query = request.args.get("owner")
     if owner_query:
         boards = Board.query.filter_by(owner=owner_query)
