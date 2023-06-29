@@ -32,7 +32,7 @@ def get_one_board(board_id):
 
     boards_response = []
     for board in boards :
-        if board.board_id == board_id:
+        if board.id == board_id:
             boards_response.append(board.to_dict())
     return jsonify(boards_response), 200
 
