@@ -21,6 +21,21 @@ def handle_boards():
         boards_response.append(board.to_dict())
     return jsonify(boards_response), 200
 
+#get single board
+@boards_bp.route("/<board_id>", methods=['GET'])
+def handle_boards(board_id):
+    owner_query = request.args.get("owner")
+    if owner_query:
+        boards = Board.query.filter_by(owner=owner_query)
+    else:
+        boards = Board.query.all()
+
+    boards_response = []
+    for board in boards :
+        if board.board_id == board_id:
+            boards_response.append(board.to_dict())
+    return jsonify(boards_response), 200
+
 
 
 @boards_bp.route("", methods=['POST'])
