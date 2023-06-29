@@ -24,17 +24,8 @@ def handle_boards():
 #get single board
 @boards_bp.route("/<board_id>", methods=['GET'])
 def get_one_board(board_id):
-    owner_query = request.args.get("owner")
-    if owner_query:
-        boards = Board.query.filter_by(owner=owner_query)
-    else:
-        boards = Board.query.all()
-
-    boards_response = []
-    for board in boards :
-        if board.id == board_id:
-            boards_response.append(board.to_dict())
-    return jsonify(boards_response), 200
+    board = get_valid_item_by_id(Board, board_id)
+    return board.to_dict(), 200
 
 
 
