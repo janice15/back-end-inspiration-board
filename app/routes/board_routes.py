@@ -67,7 +67,7 @@ def create_card(board_id):
     # Get the data from the request body
     request_body = request.get_json()
     updated_card_info = request_body
-    new_card = Card.from_dict(request_body)
+    updated_card_info["board_id"] = board_id
 
     # Use it to make an Card
     new_card= Card.from_dict(updated_card_info)
